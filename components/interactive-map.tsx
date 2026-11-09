@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, X } from "lucide-react";
 import TwinklingStars from "@/components/twinkling-stars";
+import FixedToViewport from "@/components/fixed-to-viewport";
 
 interface Project {
   title: string;
@@ -374,37 +375,10 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
   }, [discoveredProjects, projects.length, currentProject, showLevelComplete, saved]);
 
   return (
-    <div className="relative w-full h-screen bg-[#0a0a12] overflow-hidden">
-      {/* Atmospheric background */}
-      <div className="absolute inset-0">
-        {/* Deep gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f1a] via-[#1a1528] to-[#0a0a12]" />
-
-        {/* Vignette */}
-        <div className="absolute inset-0 bg-radial-gradient opacity-60"
-          style={{
-            background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%)'
-          }}
-        />
-
-        <TwinklingStars full />
-
-        {/* Mist layers */}
-        <motion.div
-          className="absolute inset-0 opacity-20"
-          style={{
-            background: 'linear-gradient(90deg, transparent, rgba(120,182,226,0.15), transparent)',
-          }}
-          animate={{
-            x: ['-100%', '100%'],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-      </div>
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Background is flat (from the page wrapper above, which spans the
+          title + maze together) — no gradient/vignette/mist here, so the
+          color stays consistent throughout the Woods screen. */}
 
       {/* Map container */}
       <div
@@ -711,16 +685,18 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
       </motion.div>
 
       {/* Controls hint */}
-      <motion.div
-        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-30 px-6 py-3 bg-card/90 border-2 border-primary/40 rounded-full backdrop-blur-sm"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-      >
-        <p className="text-foreground text-sm font-semibold text-center">
-          Use arrow keys or WASD to explore • Press <kbd className="px-1.5 py-0.5 bg-primary/20 rounded text-foreground/80 text-xs">Enter</kbd> near orbs
-        </p>
-      </motion.div>
+      <FixedToViewport>
+        <motion.div
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-30 px-6 py-3 bg-card/90 border-2 border-primary/40 rounded-full backdrop-blur-sm"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+        >
+          <p className="text-foreground text-sm font-semibold text-center">
+            Use arrow keys or WASD to explore • Press <kbd className="px-1.5 py-0.5 bg-primary/20 rounded text-foreground/80 text-xs">Enter</kbd> near orbs
+          </p>
+        </motion.div>
+      </FixedToViewport>
 
       {/* Project discovery modal */}
       <AnimatePresence>

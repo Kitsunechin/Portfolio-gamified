@@ -4,6 +4,7 @@ import * as React from "react";
 import { useState } from "react";
 import GameNav from "@/components/game-nav";
 import TwinklingStars from "@/components/twinkling-stars";
+import OrnamentalDivider from "@/components/ornamental-divider";
 import { motion } from "framer-motion";
 import { ArrowRight, Package, Sparkles } from "lucide-react";
 import Image from "next/image";
@@ -122,9 +123,11 @@ export default function WorkPage() {
                   Adventure Archive
                 </span>
               </div>
+              <OrnamentalDivider className="mb-4" />
               <h1 className="font-display uppercase tracking-[0.1em] text-4xl md:text-5xl text-foreground mb-4 text-bloom-soft">
                 All Adventures
               </h1>
+              <OrnamentalDivider className="mb-8" />
               <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
                 A collection of quests where design enhanced user experience and delivered
                 measurable impact.

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Sparkles, Zap, Target, Users, Brain, Palette } from "lucide-react";
 import TwinklingStars from "@/components/twinkling-stars";
+import OrnamentalDivider from "@/components/ornamental-divider";
 
 interface StatProps {
   label: string;
@@ -311,6 +312,8 @@ export default function CharacterProfile() {
             </div>
           </div>
         </motion.div>
+
+        <OrnamentalDivider className="mb-8" />
 
         {/* Stats & Abilities Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">

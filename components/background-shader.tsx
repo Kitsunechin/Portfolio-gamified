@@ -1,8 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export default function BackgroundShader() {
+  const pathname = usePathname();
+
+  // The Woods (home) page has its own tuned atmosphere (gradient/vignette/stars);
+  // this global shader just creates visual noise underneath it there.
+  if (pathname === "/") return null;
+
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
       {/* Animated gradient orbs */}
@@ -10,7 +17,7 @@ export default function BackgroundShader() {
         className="absolute top-0 -left-1/4 w-[800px] h-[800px] rounded-full opacity-20 dark:opacity-20"
         style={{
           background:
-            "radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(120, 182, 226, 0.3) 0%, transparent 70%)",
           filter: "blur(80px)",
         }}
         animate={{
@@ -29,7 +36,7 @@ export default function BackgroundShader() {
         className="absolute top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full opacity-15 dark:opacity-20"
         style={{
           background:
-            "radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(99, 140, 220, 0.3) 0%, transparent 70%)",
           filter: "blur(80px)",
         }}
         animate={{
@@ -48,7 +55,7 @@ export default function BackgroundShader() {
         className="absolute bottom-0 left-1/3 w-[700px] h-[700px] rounded-full opacity-10 dark:opacity-15"
         style={{
           background:
-            "radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(80, 150, 190, 0.3) 0%, transparent 70%)",
           filter: "blur(80px)",
         }}
         animate={{
@@ -76,10 +83,10 @@ export default function BackgroundShader() {
         className="absolute inset-0 opacity-30 dark:opacity-40"
         style={{
           background: `
-            radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.05) 0px, transparent 50%),
-            radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%),
-            radial-gradient(at 0% 100%, rgba(99, 102, 241, 0.05) 0px, transparent 50%)
+            radial-gradient(at 0% 0%, rgba(120, 182, 226, 0.05) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(99, 140, 220, 0.05) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(80, 150, 190, 0.05) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, rgba(120, 160, 215, 0.05) 0px, transparent 50%)
           `,
         }}
       />

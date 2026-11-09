@@ -2,6 +2,7 @@
 
 import AnimatedSection from "@/components/animated-section";
 import SectionHeader from "@/components/section-header";
+import OrnamentalDivider from "@/components/ornamental-divider";
 import ImageShowcase from "@/components/image-showcase";
 import LearningCard from "@/components/learning-card";
 import { motion, useInView } from "framer-motion";
@@ -21,7 +22,7 @@ function SectionDivider() {
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="w-px h-12 bg-gradient-to-b from-transparent via-border to-transparent" />
+      <OrnamentalDivider className="max-w-md" />
     </motion.div>
   );
 }

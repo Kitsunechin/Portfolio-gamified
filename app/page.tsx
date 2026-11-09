@@ -8,6 +8,7 @@ import GameNav from "@/components/game-nav";
 import InteractiveMap from "@/components/interactive-map";
 import IntroMountainscape from "@/components/intro-mountainscape";
 import OrnamentalDivider from "@/components/ornamental-divider";
+import TwinklingStars from "@/components/twinkling-stars";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -224,11 +225,21 @@ export default function HomePage() {
 
       {/* Interactive map */}
       {!showIntro && (
-        <div className="game-only">
-          <InteractiveMap
-            projects={MAP_PROJECTS}
-            onAllDiscovered={handleAllDiscovered}
-          />
+        <div className="game-only relative bg-background overflow-hidden">
+          <TwinklingStars full />
+          <div className="relative z-10 flex flex-col items-center pt-[142px] pb-4 px-6">
+            <OrnamentalDivider className="mb-2 max-w-xs" />
+            <h2 className="font-display uppercase tracking-[0.15em] text-lg md:text-xl text-foreground/90 text-bloom-soft">
+              The Magical Woods
+            </h2>
+            <OrnamentalDivider className="mt-2 max-w-xs" />
+          </div>
+          <div className="-mt-[110px]">
+            <InteractiveMap
+              projects={MAP_PROJECTS}
+              onAllDiscovered={handleAllDiscovered}
+            />
+          </div>
         </div>
       )}
 

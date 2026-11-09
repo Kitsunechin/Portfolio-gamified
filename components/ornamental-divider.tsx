@@ -11,7 +11,7 @@ export default function OrnamentalDivider({ className = "" }: { className?: stri
         strokeWidth="1"
         strokeLinecap="round"
       />
-      <rect x="190" y="5" width="10" height="10" transform="rotate(45 195 10)" fill="currentColor" />
+      <rect x="195" y="5" width="10" height="10" transform="rotate(45 200 10)" fill="currentColor" />
       <path
         d="M235 10 C255 6 270 15 290 10 C335 2 350 10 400 10"
         stroke="currentColor"
