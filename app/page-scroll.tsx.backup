@@ -1,0 +1,164 @@
+"use client";
+
+import * as React from "react";
+import { useState } from "react";
+import GameNav from "@/components/game-nav";
+import ForestMap from "@/components/forest-map";
+import ProjectDiscovery from "@/components/project-discovery";
+import ProjectSack from "@/components/project-sack";
+
+// Transform featured projects for the forest map
+const FOREST_PROJECTS = [
+  {
+    title: "Introducing AI recruiter Clara",
+    description: "Accelerating and scaling the recruitment process.",
+    image: "/images/AI-2.png",
+    tags: ["UI/UX design", "mobile design", "stakeholders management", "wireframing", "user research", "AI"],
+    position: 15,
+    link: "/projects/ai-recruiter",
+  },
+  {
+    title: "Guided tour",
+    description: "Educating new jobbers and introducing the onboarding tour for users.",
+    image: "/images/guided.png",
+    tags: ["UI/UX design", "user research", "IA", "design thinking"],
+    position: 35,
+    link: "/projects/guided-tour",
+  },
+  {
+    title: "Shift satisfaction",
+    description: "Giving Workers a Voice: Turning Shifts Into a Better Experience.",
+    image: "/images/satisfaction.png",
+    tags: ["UI/UX design", "user research", "B2C", "iterative design"],
+    position: 55,
+    link: "/projects/shift-satisfaction",
+  },
+  {
+    title: "Requesting time off",
+    description: "Providing transparency for workers and supervisors in shift schedules.",
+    image: "/images/timeoff.png",
+    tags: ["UI/UX design", "design thinking", "B2C", "mobile design"],
+    position: 75,
+    link: "/projects/time-off",
+  },
+];
+
+// All projects for the sack
+const ALL_PROJECTS = [
+  ...FOREST_PROJECTS,
+  {
+    title: "Productivity and fill rate",
+    description: "Providing clients with clearer workforce performance insights.",
+    image: "/images/productivity2.png",
+    tags: ["UI/UX design", "user research", "data driven design", "problem solving", "wireframing"],
+    platform: "mobile",
+  },
+  {
+    title: "Gamification",
+    description: "Behavioral intervention using points systems and contextual notifications to improve worker consistency.",
+    image: "/images/gamification.png",
+    tags: ["behavioral design", "UX research", "gamification", "user engagement", "mobile design"],
+    platform: "mobile",
+  },
+  {
+    title: "Web redesign",
+    description: "Enabling users to seamlessly transition from web to mobile while uplisting.",
+    image: "/images/webred.png",
+    tags: ["web design", "responsive design", "cross-platform", "user flows"],
+    platform: "website",
+  },
+  {
+    title: "Revamping internal management system",
+    description: "Prioritizing user needs and uncovering the hidden potential of the internal web app.",
+    image: "/images/humandroid.png",
+    tags: ["UI/UX design", "user research", "IA", "design thinking"],
+    platform: "website",
+  },
+];
+
+export default function HomePage() {
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+
+  return (
+    <>
+      <GameNav />
+      <main className="min-h-screen bg-[#0a0a12]">
+        {/* Intro overlay */}
+        <div className="fixed top-24 left-0 right-0 z-30 pointer-events-none">
+          <div className="container mx-auto px-6">
+            <div className="max-w-2xl">
+              <div className="bg-gradient-to-br from-[#1a1a2e]/95 to-[#0f0f1a]/95 backdrop-blur-sm border-2 border-cyan-500/30 rounded-2xl p-6 shadow-2xl">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                  <span className="text-xs uppercase tracking-widest text-cyan-400/80 font-semibold">
+                    Welcome to the Woods
+                  </span>
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold text-cyan-100 mb-3">
+                  Martyna's Journey
+                </h1>
+                <p className="text-cyan-300/70 text-sm leading-relaxed mb-4">
+                  Follow the fox through dark woods to discover projects. Each glowing orb holds
+                  a story of enhancing user experience, one pixel at a time.
+                </p>
+                <div className="flex items-center gap-2 text-xs text-cyan-400/60">
+                  <span>Scroll down to begin</span>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Forest map with timeline */}
+        <ForestMap
+          projects={FOREST_PROJECTS}
+          onProjectClick={setSelectedProject}
+        />
+
+        {/* Project discovery modal */}
+        <ProjectDiscovery
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+
+        {/* Project sack (floating button with modal) */}
+        <ProjectSack
+          projects={ALL_PROJECTS}
+          onProjectSelect={setSelectedProject}
+        />
+
+        {/* Footer hint */}
+        <div className="relative bg-gradient-to-b from-[#0a0a12] to-[#1a1a2e] py-16 border-t border-cyan-500/10">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-2xl mx-auto">
+              <h2 className="text-2xl font-bold text-cyan-100 mb-3">
+                End of the Trail
+              </h2>
+              <p className="text-cyan-300/70 mb-6">
+                You've discovered the main projects along the path. Check the sack for more
+                adventures, or learn about the fox's powers and abilities.
+              </p>
+              <div className="flex flex-wrap gap-3 justify-center">
+                <a
+                  href="/about"
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
+                >
+                  Character Profile
+                </a>
+                <a
+                  href="/work"
+                  className="px-6 py-3 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-300 font-semibold hover:bg-cyan-500/20 transition-all"
+                >
+                  All Adventures
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
+  );
+}

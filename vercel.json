@@ -1,0 +1,8 @@
+{
+  "name": "Portfolio-Martyna-Bulska",
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./"
+}
