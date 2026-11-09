@@ -6,7 +6,7 @@ import GameNav from "@/components/game-nav";
 import TwinklingStars from "@/components/twinkling-stars";
 import OrnamentalDivider from "@/components/ornamental-divider";
 import { motion } from "framer-motion";
-import { ArrowRight, Package, Sparkles } from "lucide-react";
+import { Package, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -92,7 +92,6 @@ const TABS: { id: TabId; label: string }[] = [
 
 export default function WorkPage() {
   const [activeTab, setActiveTab] = useState<TabId>("all");
-  const [selectedProject, setSelectedProject] = useState<any>(null);
 
   const getFilteredProjects = () => {
     const allProjects = [...JT_PROJECTS, ...PROGRAILS_PROJECTS];
@@ -155,22 +154,20 @@ export default function WorkPage() {
           {/* Projects grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProjects.map((project, index) => {
-              const jitter = ((index % 5) - 2) * 1.2;
               const asymmetricRadius =
                 index % 2 === 0
                   ? "1.25rem 1.75rem 1.25rem 1.75rem"
                   : "1.75rem 1.25rem 1.75rem 1.25rem";
 
               return (
+              <Link key={project.title} href={project.link} className="h-full">
               <motion.div
-                key={project.title}
-                className="group relative bg-gradient-to-br from-card to-background border-2 border-primary/20 overflow-hidden cursor-pointer hover:border-primary/50 transition-all"
+                className="group relative h-full flex flex-col bg-gradient-to-br from-card to-background border-2 border-primary/20 overflow-hidden cursor-pointer hover:border-primary/50 transition-all"
                 style={{ borderRadius: asymmetricRadius }}
-                initial={{ opacity: 0, y: 30, rotate: jitter }}
-                animate={{ opacity: 1, y: 0, rotate: jitter }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -8, scale: 1.02, rotate: 0 }}
-                onClick={() => setSelectedProject(project)}
+                whileHover={{ y: -8, scale: 1.02 }}
               >
                 {/* Magical particles */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
@@ -222,17 +219,17 @@ export default function WorkPage() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-6 flex-1 flex flex-col">
                   <h3 className="font-display text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                  <p className="text-sm text-muted-foreground mb-4">
                     {project.description}
                   </p>
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2">
-                    {project.tags.slice(0, 3).map(tag => (
+                    {project.tags.map(tag => (
                       <span
                         key={tag}
                         className="px-2 py-1 bg-primary/10 border border-primary/30 rounded text-xs text-primary"
@@ -240,11 +237,6 @@ export default function WorkPage() {
                         {tag}
                       </span>
                     ))}
-                    {project.tags.length > 3 && (
-                      <span className="px-2 py-1 text-xs text-muted-foreground">
-                        +{project.tags.length - 3}
-                      </span>
-                    )}
                   </div>
                 </div>
 
@@ -252,6 +244,7 @@ export default function WorkPage() {
                 <div className="absolute top-0 left-0 w-12 h-12 border-l-2 border-t-2 border-primary/30 rounded-tl-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="absolute bottom-0 right-0 w-12 h-12 border-r-2 border-b-2 border-primary/30 rounded-br-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
               </motion.div>
+              </Link>
               );
             })}
           </div>
@@ -264,79 +257,6 @@ export default function WorkPage() {
             </div>
           )}
         </div>
-
-        {/* Project detail modal */}
-        {selectedProject && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-            onClick={() => setSelectedProject(null)}
-          >
-            <motion.div
-              className="relative max-w-3xl w-full bg-gradient-to-br from-card to-background rounded-2xl border-2 border-primary/30 overflow-hidden shadow-2xl bloom-soft"
-              initial={{ scale: 0.8, y: 50, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="max-h-[calc(100dvh-2rem)] overflow-y-auto">
-              {/* Image */}
-              <div className="relative aspect-video bg-gradient-to-br from-primary/10 to-primary/5">
-                {selectedProject.image && (
-                  <Image
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    fill
-                    className="object-cover"
-                  />
-                )}
-              </div>
-
-              {/* Content */}
-              <div className="p-8">
-                <div className="flex items-center gap-2 mb-3">
-                  <Sparkles className="w-5 h-5 text-primary" />
-                  <span className="text-xs uppercase tracking-widest text-primary/80 font-semibold">
-                    Adventure Details
-                  </span>
-                </div>
-                <h2 className="font-display uppercase tracking-[0.04em] text-3xl text-foreground mb-3">
-                  {selectedProject.title}
-                </h2>
-                <p className="text-muted-foreground mb-6">
-                  {selectedProject.description}
-                </p>
-
-                {/* All tags */}
-                <div className="flex flex-wrap gap-2">
-                  {selectedProject.tags.map((tag: string) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-full text-xs text-foreground/80"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <Link
-                  href={selectedProject.link}
-                  className="mt-6 w-full px-6 py-3 bg-primary rounded-full text-primary-foreground font-semibold hover:bloom-soft transition-all inline-flex items-center justify-center gap-2"
-                >
-                  View Full Project
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-              </div>
-
-              {/* Close button */}
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20 border border-primary/30 transition-colors"
-              >
-                <span className="text-foreground text-xl">×</span>
-              </button>
-            </motion.div>
-          </div>
-        )}
       </main>
     </>
   );
