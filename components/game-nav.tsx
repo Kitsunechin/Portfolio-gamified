@@ -10,7 +10,7 @@ export default function GameNav() {
   const pathname = usePathname();
 
   const links = [
-    { href: "/", label: "Woods", icon: Home },
+    { href: "/", label: "Home", icon: Home },
     { href: "/work", label: "Adventures", icon: Map },
     { href: "/about", label: "Character", icon: User },
   ];
