@@ -6,6 +6,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, X } from "lucide-react";
+import TwinklingStars from "@/components/twinkling-stars";
 
 interface Project {
   title: string;
@@ -54,11 +55,11 @@ const BOTTOM_CLEARANCE = 96;
 const HUD_CLEARANCE = 250;
 
 const CRYSTALS = [
-  { col: 0, row: 0, color: '#22d3ee' },
+  { col: 0, row: 0, color: '#78b6e2' },
   { col: 10, row: 0, color: '#8b5cf6' },
   { col: 3, row: 3, color: '#ec4899' },
   { col: 0, row: 5, color: '#8b5cf6' },
-  { col: 10, row: 5, color: '#22d3ee' },
+  { col: 10, row: 5, color: '#78b6e2' },
 ];
 
 const TREE_IMAGES = [
@@ -104,7 +105,29 @@ const WALLS = MAZE.flatMap((line, lineIndex) => {
     }));
 });
 
-const WALL_PATH = WALLS.map((w) => `M${w.x1} ${w.y1}L${w.x2} ${w.y2}`).join('');
+// Deterministic 0..1 "random" from a point, so the hand-drawn wobble below is stable across renders.
+function seededWobble(x: number, y: number) {
+  const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+  return n - Math.floor(n);
+}
+
+const WOBBLE_AMPLITUDE = 7;
+
+// Bows each straight wall segment into a gentle hand-drawn curve instead of a rigid right angle.
+const WALL_PATH = WALLS.map((w) => {
+  const wob1 = (seededWobble(w.x1, w.y1) - 0.5) * 2 * WOBBLE_AMPLITUDE;
+  const wob2 = (seededWobble(w.x2, w.y2) - 0.5) * 2 * WOBBLE_AMPLITUDE;
+  if (w.y1 === w.y2) {
+    // Horizontal segment: wobble perpendicular, i.e. vertically.
+    const midX1 = w.x1 + (w.x2 - w.x1) * 0.33;
+    const midX2 = w.x1 + (w.x2 - w.x1) * 0.67;
+    return `M${w.x1} ${w.y1}C${midX1} ${w.y1 + wob1} ${midX2} ${w.y2 + wob2} ${w.x2} ${w.y2}`;
+  }
+  // Vertical segment: wobble perpendicular, i.e. horizontally.
+  const midY1 = w.y1 + (w.y2 - w.y1) * 0.33;
+  const midY2 = w.y1 + (w.y2 - w.y1) * 0.67;
+  return `M${w.x1} ${w.y1}C${w.x1 + wob1} ${midY1} ${w.x2 + wob2} ${midY2} ${w.x2} ${w.y2}`;
+}).join('');
 
 const toCell = (value: number) => Math.floor(value / CELL_SIZE);
 
@@ -202,18 +225,6 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
   const [fit, setFit] = useState({ scale: 1, top: NAV_CLEARANCE });
   const pointsPerProject = 250;
   const points = discoveredProjects.size * pointsPerProject;
-
-  // Generated once: re-rolling these on render makes the background jump as the fox moves.
-  const fireflies = useMemo(
-    () =>
-      Array.from({ length: 30 }, () => ({
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        duration: 3 + Math.random() * 3,
-        delay: Math.random() * 3,
-      })),
-    []
-  );
 
   const trees = useMemo(() => {
     const taken = new Set([
@@ -376,34 +387,13 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
           }}
         />
 
-        {/* Floating particles - fireflies */}
-        {fireflies.map((firefly, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1.5 h-1.5 bg-cyan-400 rounded-full"
-            style={{
-              left: `${firefly.left}%`,
-              top: `${firefly.top}%`,
-              filter: 'blur(1px)',
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.2, 1, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: firefly.duration,
-              repeat: Infinity,
-              delay: firefly.delay,
-            }}
-          />
-        ))}
+        <TwinklingStars full />
 
         {/* Mist layers */}
         <motion.div
           className="absolute inset-0 opacity-20"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(34,211,238,0.1), transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(120,182,226,0.15), transparent)',
           }}
           animate={{
             x: ['-100%', '100%'],
@@ -432,12 +422,12 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
           width={MAZE_WIDTH}
           height={MAZE_HEIGHT}
           viewBox={`0 0 ${MAZE_WIDTH} ${MAZE_HEIGHT}`}
-          style={{ filter: 'drop-shadow(0 0 8px rgba(34,211,238,0.45))' }}
+          style={{ filter: 'drop-shadow(0 0 10px rgba(120,182,226,0.6))' }}
         >
           <rect width={MAZE_WIDTH} height={MAZE_HEIGHT} fill="#12121f" opacity="0.75" />
           <path
             d={WALL_PATH}
-            stroke="#22d3ee"
+            stroke="#78b6e2"
             strokeWidth="4"
             strokeLinecap="round"
             fill="none"
@@ -506,19 +496,19 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
               >
                 {/* Outer glow */}
                 <div className={`absolute inset-0 rounded-full blur-2xl ${
-                  isDiscovered ? 'bg-purple-500/30' : 'bg-cyan-400/40'
+                  isDiscovered ? 'bg-purple-500/30' : 'bg-primary/55'
                 } animate-pulse`} />
 
                 {/* Middle layer */}
                 <div className={`absolute inset-2 rounded-full blur-xl ${
-                  isDiscovered ? 'bg-purple-400/60' : 'bg-cyan-300/60'
+                  isDiscovered ? 'bg-purple-400/60' : 'bg-primary/70'
                 }`} />
 
                 {/* Core */}
                 <div className={`absolute inset-4 rounded-full ${
                   isDiscovered
                     ? 'bg-gradient-to-br from-purple-300 to-purple-600'
-                    : 'bg-gradient-to-br from-cyan-200 to-cyan-500'
+                    : 'bg-gradient-to-br from-[#bfe0f5] to-primary'
                 }`} />
 
                 {/* Center spark */}
@@ -543,15 +533,15 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
               {/* Project name hint */}
               {isNear && (
                 <motion.div
-                  className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 bg-[#1a1a2e]/95 border border-cyan-500/40 rounded-lg"
+                  className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 bg-card/95 border border-primary/40 rounded-lg"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  <p className="text-xs text-cyan-100 font-semibold">
+                  <p className="text-xs text-foreground font-semibold">
                     {isDiscovered ? '✓ ' : ''}{project.title}
                   </p>
-                  <p className="text-xs text-cyan-400/60 mt-0.5">
-                    Press <kbd className="px-1 py-0.5 bg-cyan-500/20 rounded text-cyan-300">Enter</kbd> to {isDiscovered ? 'view' : 'discover'}
+                  <p className="text-xs text-primary/70 mt-0.5">
+                    Press <kbd className="px-1 py-0.5 bg-primary/20 rounded text-foreground/80">Enter</kbd> to {isDiscovered ? 'view' : 'discover'}
                   </p>
                 </motion.div>
               )}
@@ -584,7 +574,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
               viewBox="0 0 640 520"
               width="56"
               height="46"
-              className="drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]"
+              className="drop-shadow-[0_0_14px_rgba(120,182,226,0.7)]"
             >
               <defs>
                 <linearGradient id="leg" x1="0" y1="0" x2="0" y2="1">
@@ -651,7 +641,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
               <path d="M152 112 C153 85 163 60 176 40 C184 65 184 95 178 120Z" fill="#3a4246"/>
               <path d="M148 100 L160 104 L150 112 L165 116 L150 120Z" fill="#eef3f5"/>
 
-              <g fill="#5fd0ff">
+              <g fill="#78b6e2">
                 <circle cx="300" cy="320" r="5"/><circle cx="250" cy="300" r="3"/>
                 <circle cx="470" cy="180" r="4"/><circle cx="540" cy="260" r="3"/>
               </g>
@@ -659,7 +649,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
           </motion.div>
 
           {/* Fox glow */}
-          <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-2xl -z-10" />
+          <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl -z-10" />
         </motion.div>
       </div>
 
@@ -671,16 +661,16 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
         transition={{ delay: 0.5 }}
       >
         {/* Points counter */}
-        <div className="px-6 py-3 bg-[#1a1a2e]/95 border-2 border-cyan-500/40 rounded-xl backdrop-blur-sm">
+        <div className="px-6 py-3 bg-card/95 border-2 border-primary/40 rounded-xl backdrop-blur-sm">
           <div className="flex items-center gap-3">
             <span className="text-2xl">💎</span>
             <div>
-              <p className="text-xs text-cyan-400/60 uppercase tracking-wider">Points</p>
+              <p className="text-xs text-primary/70 uppercase tracking-wider">Points</p>
               <motion.p
-                className="text-2xl font-bold text-cyan-100"
+                className="text-2xl font-bold text-foreground"
                 key={points}
-                initial={{ scale: 1.5, color: '#22d3ee' }}
-                animate={{ scale: 1, color: '#e0f2fe' }}
+                initial={{ scale: 1.5, color: '#78b6e2' }}
+                animate={{ scale: 1, color: '#eaf4fc' }}
                 transition={{ duration: 0.3 }}
               >
                 {points}
@@ -690,15 +680,15 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
         </div>
 
         {/* Progress tracker */}
-        <div className="px-6 py-3 bg-[#1a1a2e]/95 border-2 border-cyan-500/40 rounded-xl backdrop-blur-sm">
-          <p className="text-xs text-cyan-400/60 uppercase tracking-wider mb-2">Progress</p>
+        <div className="px-6 py-3 bg-card/95 border-2 border-primary/40 rounded-xl backdrop-blur-sm">
+          <p className="text-xs text-primary/70 uppercase tracking-wider mb-2">Progress</p>
           <div className="flex gap-2">
             {projects.map((project, i) => (
               <motion.div
                 key={i}
                 className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${
                   discoveredProjects.has(project.title)
-                    ? 'bg-cyan-500 border-cyan-400'
+                    ? 'bg-primary border-primary'
                     : 'bg-gray-700/50 border-gray-600'
                 }`}
                 initial={{ scale: 0 }}
@@ -722,13 +712,13 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
 
       {/* Controls hint */}
       <motion.div
-        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-30 px-6 py-3 bg-[#1a1a2e]/90 border-2 border-cyan-500/40 rounded-full backdrop-blur-sm"
+        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-30 px-6 py-3 bg-card/90 border-2 border-primary/40 rounded-full backdrop-blur-sm"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
       >
-        <p className="text-cyan-100 text-sm font-semibold text-center">
-          Use arrow keys or WASD to explore • Press <kbd className="px-1.5 py-0.5 bg-cyan-500/20 rounded text-cyan-300 text-xs">Enter</kbd> near orbs
+        <p className="text-foreground text-sm font-semibold text-center">
+          Use arrow keys or WASD to explore • Press <kbd className="px-1.5 py-0.5 bg-primary/20 rounded text-foreground/80 text-xs">Enter</kbd> near orbs
         </p>
       </motion.div>
 
@@ -743,20 +733,26 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
             onClick={() => setCurrentProject(null)}
           >
             <motion.div
-              className="relative max-w-2xl w-full bg-gradient-to-br from-[#1a1a2e] to-[#0f0f1a] rounded-2xl border-2 border-cyan-500/40 overflow-hidden shadow-2xl"
+              className="relative max-w-2xl w-full bg-gradient-to-br from-card to-background rounded-2xl border-2 border-primary/40 overflow-hidden shadow-2xl bloom-soft"
               initial={{ scale: 0.8, y: 50 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.8, y: 50 }}
               onClick={(e) => e.stopPropagation()}
             >
+              <TwinklingStars />
+
               {/* Magical particles */}
               {[...Array(20)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-1 h-1 bg-cyan-400 rounded-full"
+                  className="absolute rounded-full"
                   style={{
                     left: `${Math.random() * 100}%`,
                     top: `${Math.random() * 100}%`,
+                    width: 4,
+                    height: 4,
+                    background: "#f6c177",
+                    boxShadow: "0 0 10px 5px rgba(246,193,119,0.45)",
                   }}
                   animate={{
                     y: [-20, -60, -20],
@@ -773,29 +769,29 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
               {/* Close button */}
               <motion.button
                 onClick={() => setCurrentProject(null)}
-                className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border-2 border-cyan-500/40 hover:border-cyan-500/60 transition-all group"
+                className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20 border-2 border-primary/40 hover:border-primary/60 transition-all group"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <X className="w-5 h-5 text-cyan-300 group-hover:text-cyan-100" />
+                <X className="w-5 h-5 text-foreground/80 group-hover:text-foreground" />
               </motion.button>
 
               <div className="p-8 max-h-[calc(100dvh-2rem)] overflow-y-auto">
                 <motion.div
-                  className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/20 border border-cyan-500/40 rounded-full mb-4"
+                  className="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 border border-primary/40 rounded-full mb-4"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                 >
-                  <span className="text-xs uppercase tracking-widest text-cyan-300 font-bold">
+                  <span className="text-xs uppercase tracking-widest text-foreground/80 font-bold">
                     ✨ Discovery
                   </span>
                 </motion.div>
 
                 <motion.h2
-                  className="text-3xl font-bold text-cyan-100 mb-4"
+                  className="font-display uppercase tracking-[0.04em] text-3xl text-foreground mb-4"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 }}
@@ -804,7 +800,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
                 </motion.h2>
 
                 <motion.p
-                  className="text-cyan-300/80 mb-6 leading-relaxed"
+                  className="text-muted-foreground mb-6 leading-relaxed"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
@@ -814,7 +810,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
 
                 {currentProject.image && (
                   <motion.div
-                    className="relative aspect-video rounded-xl overflow-hidden border border-cyan-500/30 mb-6"
+                    className="relative aspect-video rounded-xl overflow-hidden border border-primary/30 mb-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
@@ -837,7 +833,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
                   {currentProject.tags.map((tag, i) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-xs text-cyan-300"
+                      className="px-3 py-1 bg-primary/10 border border-primary/30 rounded-full text-xs text-foreground/80"
                     >
                       {tag}
                     </span>
@@ -847,7 +843,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
                 {currentProject.link ? (
                   <Link href={currentProject.link}>
                     <motion.button
-                      className="w-full px-6 py-3 bg-blue-600 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all inline-flex items-center justify-center gap-2"
+                      className="w-full px-6 py-3 bg-primary rounded-full text-primary-foreground font-semibold hover:bloom-soft transition-all inline-flex items-center justify-center gap-2"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 }}
@@ -861,7 +857,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
                 ) : (
                   <motion.button
                     onClick={() => setCurrentProject(null)}
-                    className="w-full px-6 py-3 bg-blue-600 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
+                    className="w-full px-6 py-3 bg-primary rounded-full text-primary-foreground font-semibold hover:bloom-soft transition-all"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
@@ -887,18 +883,24 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="relative max-w-lg w-full bg-gradient-to-br from-[#1a1a2e] to-[#0f0f1a] rounded-2xl border-2 border-cyan-500/40 overflow-hidden"
+              className="relative max-w-lg w-full bg-gradient-to-br from-card to-background rounded-2xl border-2 border-primary/40 overflow-hidden bloom-soft"
               initial={{ scale: 0.8, y: 50 }}
               animate={{ scale: 1, y: 0 }}
             >
+              <TwinklingStars />
+
               {/* Celebration particles */}
               {[...Array(30)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-2 h-2 bg-cyan-400 rounded-full"
+                  className="absolute rounded-full"
                   style={{
                     left: `${Math.random() * 100}%`,
                     top: `${Math.random() * 100}%`,
+                    width: 8,
+                    height: 8,
+                    background: "#f6c177",
+                    boxShadow: "0 0 16px 8px rgba(246,193,119,0.45)",
                   }}
                   animate={{
                     y: [-100, 100],
@@ -925,23 +927,23 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
                   ⭐
                 </motion.div>
 
-                <h2 className="text-4xl font-bold text-cyan-100 mb-3">
+                <h2 className="font-display uppercase tracking-[0.1em] text-4xl text-foreground mb-3 text-bloom-soft">
                   Level Complete!
                 </h2>
 
                 <div className="mb-6">
                   <motion.p
-                    className="text-5xl font-bold text-cyan-400 mb-2"
+                    className="font-display text-5xl text-primary mb-2"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", delay: 0.3 }}
                   >
                     {points}
                   </motion.p>
-                  <p className="text-cyan-300/60 text-sm uppercase tracking-wider">Points Earned</p>
+                  <p className="text-muted-foreground text-sm uppercase tracking-wider">Points Earned</p>
                 </div>
 
-                <p className="text-cyan-300/80 mb-8">
+                <p className="text-muted-foreground mb-8">
                   All projects discovered! Ready for the next level?
                 </p>
 
@@ -955,7 +957,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
                     });
                     onAllDiscovered();
                   }}
-                  className="w-full px-6 py-4 bg-blue-600 rounded-full text-white font-bold text-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all inline-flex items-center justify-center gap-2"
+                  className="w-full px-6 py-4 bg-primary rounded-full text-primary-foreground font-bold text-lg hover:bloom-soft transition-all inline-flex items-center justify-center gap-2"
                 >
                   Next Level: Adventure Archive
                   <ArrowRight className="w-5 h-5" />

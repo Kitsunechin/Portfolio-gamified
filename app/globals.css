@@ -16,43 +16,68 @@
   .bg-gradient-radial {
     background-image: radial-gradient(circle, var(--tw-gradient-stops));
   }
+
+  /* Soft watercolor bloom, replacing hard neon glow */
+  .bloom-soft {
+    box-shadow: 0 0 40px -8px hsl(var(--primary) / 0.25);
+  }
+
+  .text-bloom-soft {
+    text-shadow: 0 0 28px hsl(var(--primary) / 0.3);
+  }
+}
+
+/* Faint hand-painted paper grain, used on the case-study, work and about surfaces.
+   The pseudo-element is fixed (not absolute) so it never needs the host element
+   to claim `position`, which would otherwise silently fight utilities like `fixed`. */
+.game-theme::before,
+.paper-grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
 }
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 93%;
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 93%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 93%;
-    --primary: 168 45% 50%;
-    --primary-foreground: 0 0% 7%;
-    --secondary: 0 0% 14%;
-    --secondary-foreground: 0 0% 80%;
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 168 45% 50%;
-    --accent-foreground: 0 0% 7%;
+    --background: 230 32% 8%;
+    --foreground: 205 40% 92%;
+    --card: 230 28% 14%;
+    --card-foreground: 205 40% 92%;
+    --popover: 230 28% 14%;
+    --popover-foreground: 205 40% 92%;
+    --primary: 205 65% 68%;
+    --primary-foreground: 230 32% 8%;
+    --secondary: 225 20% 18%;
+    --secondary-foreground: 205 30% 80%;
+    --muted: 225 20% 18%;
+    --muted-foreground: 205 20% 60%;
+    --accent: 205 65% 68%;
+    --accent-foreground: 230 32% 8%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 168 45% 50%;
-    --chart-1: 168 45% 50%;
-    --chart-2: 168 35% 40%;
-    --chart-3: 0 0% 55%;
-    --chart-4: 168 25% 60%;
-    --chart-5: 0 0% 70%;
+    --border: 205 30% 26%;
+    --input: 205 30% 26%;
+    --ring: 205 65% 68%;
+    --chart-1: 205 65% 68%;
+    --chart-2: 217 70% 60%;
+    --chart-3: 195 55% 55%;
+    --chart-4: 205 40% 78%;
+    --chart-5: 220 25% 45%;
     --radius: 0.75rem;
-    --sidebar-background: 0 0% 7%;
-    --sidebar-foreground: 0 0% 93%;
-    --sidebar-primary: 168 45% 50%;
-    --sidebar-primary-foreground: 0 0% 7%;
-    --sidebar-accent: 0 0% 14%;
-    --sidebar-accent-foreground: 0 0% 93%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 168 45% 50%;
+    --sidebar-background: 230 32% 8%;
+    --sidebar-foreground: 205 40% 92%;
+    --sidebar-primary: 205 65% 68%;
+    --sidebar-primary-foreground: 230 32% 8%;
+    --sidebar-accent: 225 20% 18%;
+    --sidebar-accent-foreground: 205 40% 92%;
+    --sidebar-border: 205 30% 26%;
+    --sidebar-ring: 205 65% 68%;
   }
 
   .light {
@@ -100,7 +125,7 @@
     @apply bg-background text-foreground;
   }
   ::selection {
-    background-color: hsl(168 45% 50% / 0.3);
+    background-color: hsl(205 65% 68% / 0.3);
   }
 }
 
@@ -125,28 +150,28 @@ html {
 
 /* Case-study pages: re-tokens the shared components to the game palette. */
 .game-theme {
-  --background: 240 29% 6%;
-  --foreground: 186 90% 92%;
-  --card: 240 28% 14%;
-  --card-foreground: 186 90% 92%;
-  --popover: 240 28% 14%;
-  --popover-foreground: 186 90% 92%;
-  --primary: 188 86% 53%;
-  --primary-foreground: 240 29% 6%;
-  --secondary: 240 25% 16%;
-  --secondary-foreground: 186 60% 80%;
-  --muted: 240 25% 16%;
-  --muted-foreground: 188 40% 72%;
-  --accent: 188 86% 53%;
-  --accent-foreground: 240 29% 6%;
-  --border: 188 55% 24%;
-  --input: 188 55% 24%;
-  --ring: 188 86% 53%;
-  --chart-1: 188 86% 53%;
-  --chart-2: 217 91% 60%;
-  --chart-3: 258 90% 66%;
-  --chart-4: 188 60% 70%;
-  --chart-5: 330 81% 60%;
+  --background: 230 32% 8%;
+  --foreground: 205 40% 92%;
+  --card: 230 28% 14%;
+  --card-foreground: 205 40% 92%;
+  --popover: 230 28% 14%;
+  --popover-foreground: 205 40% 92%;
+  --primary: 205 65% 68%;
+  --primary-foreground: 230 32% 8%;
+  --secondary: 225 20% 18%;
+  --secondary-foreground: 205 30% 80%;
+  --muted: 225 20% 18%;
+  --muted-foreground: 205 20% 60%;
+  --accent: 205 65% 68%;
+  --accent-foreground: 230 32% 8%;
+  --border: 205 30% 26%;
+  --input: 205 30% 26%;
+  --ring: 205 65% 68%;
+  --chart-1: 205 65% 68%;
+  --chart-2: 217 70% 60%;
+  --chart-3: 195 55% 55%;
+  --chart-4: 205 40% 78%;
+  --chart-5: 220 25% 45%;
 
   /* 176px keeps the prototype clear of the fixed navbar at any window height. */
   --hero-phone-width: min(240px, calc((100vh - 176px) * 0.55 * 375 / 812));
@@ -164,16 +189,12 @@ html {
   }
 }
 
-.game-theme .font-display {
-  font-family: var(--font-inter), system-ui, sans-serif;
-}
-
 .game-theme h1,
 .game-theme h2 {
-  text-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
+  text-shadow: 0 0 32px hsl(var(--primary) / 0.25);
 }
 
 .game-theme .bg-card {
-  background-image: linear-gradient(135deg, #1a1a2e, #0f0f1a);
-  box-shadow: 0 0 24px rgba(34, 211, 238, 0.07);
+  background-image: linear-gradient(135deg, hsl(230 28% 16%), hsl(230 30% 10%));
+  box-shadow: 0 0 24px hsl(var(--primary) / 0.07);
 }

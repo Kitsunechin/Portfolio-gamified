@@ -30,9 +30,16 @@ export default function GameAtmosphere({ count }: { count: number }) {
       {fireflies.map((firefly, i) => (
         <motion.div
           key={i}
-          className="absolute w-1.5 h-1.5 bg-cyan-400 rounded-full"
-          style={{ left: `${firefly.left}%`, top: `${firefly.top}%`, filter: "blur(1px)" }}
-          animate={{ y: [0, -20, 0], opacity: [0.1, 0.6, 0.1] }}
+          className="absolute rounded-full"
+          style={{
+            left: `${firefly.left}%`,
+            top: `${firefly.top}%`,
+            width: 5,
+            height: 5,
+            background: "#f6c177",
+            boxShadow: "0 0 14px 7px rgba(246,193,119,0.5)",
+          }}
+          animate={{ y: [0, -20, 0], opacity: [0.2, 0.9, 0.2], scale: [0.9, 1.15, 0.9] }}
           transition={{ duration: firefly.duration, repeat: Infinity, delay: firefly.delay }}
         />
       ))}

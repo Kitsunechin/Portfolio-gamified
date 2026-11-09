@@ -6,6 +6,8 @@ import { INTRO_SEEN_KEY, SHOW_INTRO_EVENT } from "@/lib/intro";
 import { useRouter } from "next/navigation";
 import GameNav from "@/components/game-nav";
 import InteractiveMap from "@/components/interactive-map";
+import IntroMountainscape from "@/components/intro-mountainscape";
+import OrnamentalDivider from "@/components/ornamental-divider";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,13 +55,24 @@ const MAP_PROJECTS = [
 
 function TouchProjectList() {
   return (
-    <main className="touch-only min-h-screen bg-[#0a0a12] pt-32 pb-16 px-6">
+    <main className="touch-only min-h-screen bg-background paper-grain pt-32 pb-16 px-6">
+      <div className="relative -mx-6 mb-10 overflow-hidden px-6 py-14">
+        <IntroMountainscape />
+        <div className="relative z-10 text-center">
+          <OrnamentalDivider className="mb-4" />
+          <h1 className="font-display uppercase tracking-[0.1em] text-3xl text-foreground leading-[1.15]">
+            <span className="block">Martyna's</span>
+            <span className="block">Journey</span>
+          </h1>
+          <OrnamentalDivider className="mt-4 mb-5" />
+          <p className="font-display italic text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
+            A silver fox wanders through magical woods, seeking glowing memories of design adventures.
+          </p>
+        </div>
+      </div>
+
       <div className="max-w-xl mx-auto">
-        <h1 className="text-4xl font-bold text-cyan-100 mb-3">Martyna's Journey</h1>
-        <p className="text-cyan-300/80 leading-relaxed mb-2">
-          A silver fox wanders through magical woods, seeking glowing memories of design adventures.
-        </p>
-        <p className="text-sm text-cyan-400/60 mb-8">
+        <p className="text-sm text-muted-foreground/70 mb-8 text-center">
           Open this page on a computer to guide the fox through the labyrinth.
         </p>
 
@@ -68,7 +81,7 @@ function TouchProjectList() {
             <li key={project.title}>
               <Link
                 href={project.link}
-                className="block bg-gradient-to-br from-[#1a1a2e] to-[#0f0f1a] border-2 border-cyan-500/30 rounded-2xl overflow-hidden"
+                className="block bg-gradient-to-br from-card to-background border-2 border-primary/30 rounded-2xl overflow-hidden"
               >
                 <div className="relative aspect-video">
                   <Image
@@ -80,8 +93,8 @@ function TouchProjectList() {
                   />
                 </div>
                 <div className="p-5">
-                  <h2 className="text-lg font-bold text-cyan-100 mb-1">{project.title}</h2>
-                  <p className="text-sm text-cyan-300/70">{project.description}</p>
+                  <h2 className="font-display text-lg text-foreground mb-1">{project.title}</h2>
+                  <p className="text-sm text-muted-foreground">{project.description}</p>
                 </div>
               </Link>
             </li>
@@ -90,7 +103,7 @@ function TouchProjectList() {
 
         <Link
           href="/work"
-          className="mt-8 w-full px-6 py-4 bg-blue-600 rounded-full text-white font-semibold inline-flex items-center justify-center gap-2"
+          className="mt-8 w-full px-6 py-4 bg-primary rounded-full text-primary-foreground font-semibold inline-flex items-center justify-center gap-2"
         >
           See All Adventures
           <ArrowRight className="w-4 h-4" />
@@ -146,37 +159,43 @@ export default function HomePage() {
       {!introAlreadySeen && <AnimatePresence>
         {showIntro && (
           <motion.div
-            className="game-only fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a12]"
+            className="game-only fixed inset-0 z-50 flex items-center justify-center bg-background paper-grain overflow-hidden"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8 }}
           >
+            <IntroMountainscape />
+
             <motion.div
-              className="text-center max-w-2xl px-6"
+              className="relative z-10 text-center max-w-2xl px-6"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
             >
+              <OrnamentalDivider className="mb-6" />
+
               {/* Title with mystical effect */}
               <motion.div
-                className="mb-8"
+                className="mb-6"
                 animate={{
                   textShadow: [
-                    '0 0 20px rgba(34,211,238,0.3)',
-                    '0 0 40px rgba(34,211,238,0.6)',
-                    '0 0 20px rgba(34,211,238,0.3)',
+                    '0 0 20px hsl(var(--primary) / 0.25)',
+                    '0 0 44px hsl(var(--primary) / 0.45)',
+                    '0 0 20px hsl(var(--primary) / 0.25)',
                   ],
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <h1 className="text-5xl md:text-7xl font-bold text-cyan-100 mb-4">
-                  Martyna's Journey
+                <h1 className="font-display uppercase tracking-[0.12em] text-5xl md:text-7xl text-foreground leading-[1.1]">
+                  <span className="block">Martyna's</span>
+                  <span className="block">Journey</span>
                 </h1>
-                <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
               </motion.div>
 
+              <OrnamentalDivider className="mb-8" />
+
               <motion.p
-                className="text-lg md:text-xl text-cyan-300/80 mb-8 leading-relaxed"
+                className="font-display italic text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
@@ -187,36 +206,17 @@ export default function HomePage() {
 
               <motion.button
                 onClick={beginJourney}
-                className="px-8 py-4 bg-blue-600 rounded-full text-white font-bold text-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
+                className="group inline-flex items-center gap-3 font-display uppercase tracking-[0.3em] text-lg text-foreground"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.2 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Begin Journey
+                <span className="text-amber-400 transition-transform group-hover:-translate-x-1">‹</span>
+                Begin
+                <span className="text-amber-400 transition-transform group-hover:translate-x-1">›</span>
               </motion.button>
-
-              {/* Ambient particles */}
-              {[...Array(15)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                  }}
-                  animate={{
-                    y: [0, -30, 0],
-                    opacity: [0, 1, 0],
-                  }}
-                  transition={{
-                    duration: 3 + Math.random() * 2,
-                    repeat: Infinity,
-                    delay: Math.random() * 3,
-                  }}
-                />
-              ))}
             </motion.div>
           </motion.div>
         )}

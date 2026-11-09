@@ -178,8 +178,11 @@ export default function RadialOrbitalTimeline({
       <div className="w-full h-screen flex flex-col items-center justify-center bg-background overflow-hidden">
         <div className="relative w-full max-w-5xl h-full flex items-center justify-center scale-125">
           <div className="absolute w-full h-full flex items-center justify-center">
-            <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-cyan-950 via-cyan-800 to-cyan-600 flex items-center justify-center z-10">
-              <div className="w-8 h-8 rounded-full bg-cyan-400/80"></div>
+            <div
+              className="absolute w-16 h-16 rounded-full flex items-center justify-center z-10"
+              style={{ background: "radial-gradient(circle at 35% 30%, hsl(var(--foreground)), hsl(var(--primary)) 45%, hsl(var(--background)) 100%)" }}
+            >
+              <div className="w-8 h-8 rounded-full" style={{ backgroundColor: "hsl(var(--primary) / 0.8)" }}></div>
             </div>
             <div className="absolute w-[560px] h-[560px] rounded-full border border-primary/10"></div>
             {timelineData.map((item, index) => {
@@ -234,40 +237,40 @@ export default function RadialOrbitalTimeline({
         >
           <div className="absolute w-20 h-20 rounded-full flex items-center justify-center z-10">
             {/* Outer glow layers */}
-            <div className="absolute w-32 h-32 rounded-full bg-gradient-to-br from-cyan-900/20 via-cyan-700/30 to-cyan-500/40 blur-2xl animate-pulse"></div>
-            <div className="absolute w-24 h-24 rounded-full bg-gradient-to-br from-cyan-800/30 via-cyan-600/40 to-cyan-400/50 blur-xl animate-pulse" style={{ animationDelay: "0.3s" }}></div>
+            <div className="absolute w-32 h-32 rounded-full blur-2xl animate-pulse" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.35), transparent 70%)" }}></div>
+            <div className="absolute w-24 h-24 rounded-full blur-xl animate-pulse" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.45), transparent 70%)", animationDelay: "0.3s" }}></div>
 
             {/* Animated ping rings */}
-            <div className="absolute w-20 h-20 rounded-full border border-cyan-500/30 animate-ping opacity-70"></div>
+            <div className="absolute w-20 h-20 rounded-full border animate-ping opacity-70" style={{ borderColor: "hsl(var(--primary) / 0.3)" }}></div>
             <div
-              className="absolute w-24 h-24 rounded-full border border-cyan-400/20 animate-ping opacity-50"
-              style={{ animationDelay: "0.5s" }}
+              className="absolute w-24 h-24 rounded-full border animate-ping opacity-50"
+              style={{ borderColor: "hsl(var(--primary) / 0.2)", animationDelay: "0.5s" }}
             ></div>
             <div
-              className="absolute w-28 h-28 rounded-full border border-cyan-300/10 animate-ping opacity-30"
-              style={{ animationDelay: "1s" }}
+              className="absolute w-28 h-28 rounded-full border animate-ping opacity-30"
+              style={{ borderColor: "hsl(var(--primary) / 0.1)", animationDelay: "1s" }}
             ></div>
 
             {/* Main center sphere with shader effect */}
             <div className="relative w-16 h-16 rounded-full overflow-hidden">
               {/* Dark to light gradient base */}
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-950 via-cyan-800 to-cyan-600"></div>
+              <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 35% 30%, hsl(var(--foreground)), hsl(var(--primary)) 45%, hsl(var(--background)) 100%)" }}></div>
 
               {/* Radial glow overlay */}
-              <div className="absolute inset-0 bg-gradient-radial from-cyan-400/60 via-cyan-600/40 to-transparent"></div>
+              <div className="absolute inset-0" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.6), hsl(var(--primary) / 0.3) 60%, transparent 100%)" }}></div>
 
               {/* Animated shine effect */}
               <div
-                className="absolute inset-0 bg-gradient-to-br from-cyan-200/40 via-transparent to-transparent opacity-50 animate-pulse"
-                style={{ animationDuration: "3s" }}
+                className="absolute inset-0 opacity-50 animate-pulse"
+                style={{ background: "radial-gradient(circle at 30% 20%, hsl(var(--foreground) / 0.5), transparent 60%)", animationDuration: "3s" }}
               ></div>
 
               {/* Inner core */}
-              <div className="absolute inset-2 rounded-full bg-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700 shadow-inner"></div>
-              <div className="absolute inset-3 rounded-full bg-gradient-to-br from-cyan-400/80 via-cyan-500/60 to-cyan-600/40 backdrop-blur-sm animate-pulse" style={{ animationDuration: "2s" }}></div>
+              <div className="absolute inset-2 rounded-full shadow-inner" style={{ background: "linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--primary) / 0.85), hsl(var(--primary) / 0.7))" }}></div>
+              <div className="absolute inset-3 rounded-full backdrop-blur-sm animate-pulse" style={{ background: "linear-gradient(to bottom right, hsl(var(--primary) / 0.8), hsl(var(--primary) / 0.6), hsl(var(--primary) / 0.4))", animationDuration: "2s" }}></div>
 
               {/* Highlight spot */}
-              <div className="absolute top-2 left-2 w-3 h-3 rounded-full bg-gradient-to-br from-cyan-200 to-cyan-300/50 blur-sm"></div>
+              <div className="absolute top-2 left-2 w-3 h-3 rounded-full blur-sm" style={{ background: "linear-gradient(to bottom right, hsl(var(--foreground)), hsl(var(--foreground) / 0.5))" }}></div>
             </div>
           </div>
 

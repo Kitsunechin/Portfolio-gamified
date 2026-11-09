@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Package, Filter, X, Sparkles } from "lucide-react";
 import Image from "next/image";
+import TwinklingStars from "@/components/twinkling-stars";
 
 interface Project {
   title: string;
@@ -39,7 +40,7 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
     <>
       {/* Floating sack button */}
       <motion.button
-        className="fixed bottom-8 right-8 z-40 w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/50 flex items-center justify-center cursor-pointer group"
+        className="fixed bottom-8 right-8 z-40 w-16 h-16 rounded-full bg-primary bloom-soft flex items-center justify-center cursor-pointer group"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
@@ -50,11 +51,11 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
           y: { duration: 2, repeat: Infinity, ease: "easeInOut" },
         }}
       >
-        <Package className="w-7 h-7 text-white" />
+        <Package className="w-7 h-7 text-primary-foreground" />
 
         {/* Badge showing project count */}
         <motion.div
-          className="absolute -top-1 -right-1 w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center text-xs font-bold text-white border-2 border-[#0a0a12]"
+          className="absolute -top-1 -right-1 w-6 h-6 bg-foreground rounded-full flex items-center justify-center text-xs font-bold text-background border-2 border-background"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", delay: 0.5 }}
@@ -64,7 +65,7 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
 
         {/* Glow effect */}
         <motion.div
-          className="absolute inset-0 rounded-full bg-cyan-400/30 blur-xl"
+          className="absolute inset-0 rounded-full bg-primary/30 blur-xl"
           animate={{
             opacity: [0.3, 0.6, 0.3],
             scale: [1, 1.2, 1],
@@ -84,22 +85,23 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
             onClick={() => setIsOpen(false)}
           >
             <motion.div
-              className="relative max-w-4xl w-full max-h-[85vh] bg-gradient-to-br from-[#1a1a2e] to-[#0f0f1a] rounded-2xl border-2 border-cyan-500/30 overflow-hidden shadow-2xl flex flex-col"
+              className="relative max-w-4xl w-full max-h-[85vh] bg-gradient-to-br from-card to-background rounded-2xl border-2 border-primary/30 overflow-hidden shadow-2xl flex flex-col"
               initial={{ scale: 0.8, y: 50, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.8, y: 50, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="relative p-6 border-b border-cyan-500/20">
+              <div className="relative p-6 border-b border-primary/20 overflow-hidden">
+                <TwinklingStars />
                 <motion.div
-                  className="flex items-center gap-3 mb-4"
+                  className="relative z-10 flex items-center gap-3 mb-4"
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                 >
-                  <Package className="w-6 h-6 text-cyan-400" />
-                  <h2 className="text-2xl font-bold text-cyan-100">Project Sack</h2>
-                  <span className="px-2 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-xs text-cyan-300">
+                  <Package className="w-6 h-6 text-primary" />
+                  <h2 className="font-display uppercase tracking-[0.1em] text-2xl text-foreground">Project Sack</h2>
+                  <span className="px-2 py-1 bg-primary/15 border border-primary/30 rounded-full text-xs text-foreground/80">
                     {filteredProjects.length} items
                   </span>
                 </motion.div>
@@ -117,18 +119,18 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                     placeholder="Search projects..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full px-4 py-2 bg-[#0a0a12]/50 border border-cyan-500/30 rounded-lg text-cyan-100 placeholder-cyan-500/40 focus:outline-none focus:border-cyan-500/60"
+                    className="w-full px-4 py-2 bg-background/50 border border-primary/30 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary/60"
                   />
 
                   {/* Filter buttons */}
                   <div className="flex items-center gap-2 flex-wrap">
-                    <Filter className="w-4 h-4 text-cyan-400/60" />
+                    <Filter className="w-4 h-4 text-primary/60" />
                     <button
                       onClick={() => setFilter("all")}
                       className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                         filter === "all"
-                          ? "bg-cyan-500 text-white"
-                          : "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-primary/10 text-muted-foreground border border-primary/30 hover:bg-primary/20"
                       }`}
                     >
                       All
@@ -139,8 +141,8 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                         onClick={() => setFilter(platform)}
                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                           filter === platform
-                            ? "bg-cyan-500 text-white"
-                            : "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-primary/10 text-muted-foreground border border-primary/30 hover:bg-primary/20"
                         }`}
                       >
                         {platform}
@@ -152,9 +154,9 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                 {/* Close button */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition-colors"
+                  className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20 border border-primary/30 transition-colors"
                 >
-                  <X className="w-4 h-4 text-cyan-300" />
+                  <X className="w-4 h-4 text-foreground/80" />
                 </button>
               </div>
 
@@ -164,7 +166,7 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                   {filteredProjects.map((project, index) => (
                     <motion.div
                       key={project.title}
-                      className="group relative bg-[#0a0a12]/50 border border-cyan-500/20 rounded-xl overflow-hidden cursor-pointer hover:border-cyan-500/50 transition-all"
+                      className="group relative bg-background/50 border border-primary/20 rounded-xl overflow-hidden cursor-pointer hover:border-primary/50 transition-all"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
@@ -175,7 +177,7 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                       }}
                     >
                       {/* Image */}
-                      <div className="relative aspect-video bg-gradient-to-br from-cyan-500/10 to-blue-500/10">
+                      <div className="relative aspect-video bg-gradient-to-br from-primary/10 to-primary/5">
                         {project.image && (
                           <Image
                             src={project.image}
@@ -184,15 +186,15 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                             className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                           />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a12] via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
                       </div>
 
                       {/* Content */}
                       <div className="p-4">
-                        <h3 className="text-sm font-semibold text-cyan-100 mb-1 line-clamp-1">
+                        <h3 className="font-display text-sm text-foreground mb-1 line-clamp-1">
                           {project.title}
                         </h3>
-                        <p className="text-xs text-cyan-300/60 mb-3 line-clamp-2">
+                        <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
                           {project.description}
                         </p>
 
@@ -201,13 +203,13 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                           {project.tags.slice(0, 2).map(tag => (
                             <span
                               key={tag}
-                              className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 rounded text-xs text-cyan-400"
+                              className="px-2 py-0.5 bg-primary/10 border border-primary/30 rounded text-xs text-primary"
                             >
                               {tag}
                             </span>
                           ))}
                           {project.tags.length > 2 && (
-                            <span className="px-2 py-0.5 text-xs text-cyan-400/60">
+                            <span className="px-2 py-0.5 text-xs text-muted-foreground">
                               +{project.tags.length - 2}
                             </span>
                           )}
@@ -220,7 +222,7 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                         initial={{ scale: 0, rotate: -180 }}
                         whileHover={{ scale: 1, rotate: 0 }}
                       >
-                        <Sparkles className="w-4 h-4 text-cyan-400" />
+                        <Sparkles className="w-4 h-4 text-primary" />
                       </motion.div>
                     </motion.div>
                   ))}
@@ -229,9 +231,9 @@ export default function ProjectSack({ projects, onProjectSelect }: ProjectSackPr
                 {/* Empty state */}
                 {filteredProjects.length === 0 && (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <Package className="w-16 h-16 text-cyan-500/30 mb-4" />
-                    <p className="text-cyan-300/60 mb-2">No projects found</p>
-                    <p className="text-xs text-cyan-500/40">Try adjusting your filters</p>
+                    <Package className="w-16 h-16 text-primary/30 mb-4" />
+                    <p className="text-muted-foreground mb-2">No projects found</p>
+                    <p className="text-xs text-muted-foreground/60">Try adjusting your filters</p>
                   </div>
                 )}
               </div>

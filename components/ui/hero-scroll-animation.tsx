@@ -26,14 +26,14 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
   if (!isClient) {
     return (
       <section className='sticky top-0 h-screen pt-32 pb-8 bg-gradient-to-b from-background to-background/95 flex items-center justify-center text-foreground overflow-hidden'>
-        <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#22d3ee14_1px,transparent_1px),linear-gradient(to_bottom,#22d3ee14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
+        <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#60a5fa14_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
         <div className='container mx-auto px-6 md:px-16 lg:px-24 relative z-10'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
             <div className='flex flex-col gap-6 order-2 lg:order-1'>
               <p className='text-xs md:text-sm uppercase tracking-[0.35em] text-primary font-sans font-medium'>
                 {titleLine1 || 'Case Study'}
               </p>
-              <h1 className='text-4xl md:text-6xl lg:text-7xl font-display font-bold text-foreground tracking-tight leading-[110%]'>
+              <h1 className='text-4xl md:text-6xl lg:text-7xl font-display uppercase tracking-[0.06em] text-foreground leading-[110%]'>
                 {titleLine2 || 'Guided Tour Onboarding'}
               </h1>
               <p className='text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl'>
@@ -45,18 +45,18 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
                 {isDesktop ? (
                   /* Desktop frame */
                   <div
-                    className='relative rounded-[1rem] md:rounded-[1.5rem] bg-[#1a1a2e] p-[4px] md:p-[6px] shadow-2xl'
+                    className='relative rounded-[1rem] md:rounded-[1.5rem] bg-card p-[4px] md:p-[6px] shadow-2xl'
                     style={{
                       width: 'var(--hero-desktop-width)',
                       aspectRatio: '16 / 9',
                       boxShadow: `
                         0 0 0 1px rgba(255,255,255,0.08),
                         0 25px 60px -12px rgba(0,0,0,0.5),
-                        0 0 60px 10px rgba(34, 211, 238, 0.22)
+                        0 0 60px 10px rgba(147, 197, 253, 0.22)
                       `,
                     }}
                   >
-                    <div className='relative w-full h-full rounded-[0.75rem] md:rounded-[1.25rem] overflow-hidden bg-[#0f0f1a]'>
+                    <div className='relative w-full h-full rounded-[0.75rem] md:rounded-[1.25rem] overflow-hidden bg-background'>
                       {videoSrc && (
                         isImage ? (
                           <img
@@ -78,24 +78,24 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
                       )}
                       <div className='absolute inset-0 rounded-[0.75rem] md:rounded-[1.25rem] shadow-[inset_0_0_20px_rgba(0,0,0,0.3)] pointer-events-none z-10' />
                     </div>
-                    <div className='absolute -bottom-[12px] left-1/2 -translate-x-1/2 w-[60%] h-[8px] bg-[#2a2a45] rounded-b-lg' />
-                    <div className='absolute -bottom-[20px] left-1/2 -translate-x-1/2 w-[80%] h-[4px] bg-[#1a1a2e] rounded-full' />
+                    <div className='absolute -bottom-[12px] left-1/2 -translate-x-1/2 w-[60%] h-[8px] bg-muted rounded-b-lg' />
+                    <div className='absolute -bottom-[20px] left-1/2 -translate-x-1/2 w-[80%] h-[4px] bg-card rounded-full' />
                   </div>
                 ) : (
                   /* Phone frame */
                   <div
-                    className='relative rounded-[2.5rem] md:rounded-[3rem] bg-[#1a1a2e] p-[3px] md:p-1 shadow-2xl'
+                    className='relative rounded-[2.5rem] md:rounded-[3rem] bg-card p-[3px] md:p-1 shadow-2xl'
                     style={{
                       width: 'var(--hero-phone-width)',
                       aspectRatio: '375 / 812',
                       boxShadow: `
                         0 0 0 1px rgba(255,255,255,0.08),
                         0 25px 60px -12px rgba(0,0,0,0.5),
-                        0 0 60px 10px rgba(34, 211, 238, 0.22)
+                        0 0 60px 10px rgba(147, 197, 253, 0.22)
                       `,
                     }}
                   >
-                    <div className='relative w-full h-full rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-[#0f0f1a]'>
+                    <div className='relative w-full h-full rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-background'>
                       {videoSrc && (
                         isImage ? (
                           <img
@@ -117,10 +117,10 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
                       )}
                       <div className='absolute inset-0 rounded-[2.25rem] md:rounded-[2.75rem] shadow-[inset_0_0_20px_rgba(0,0,0,0.3)] pointer-events-none z-10' />
                     </div>
-                    <div className='absolute -right-[2px] top-[28%] w-[3px] h-[8%] bg-[#2a2a45] rounded-l-sm' />
-                    <div className='absolute -left-[2px] top-[22%] w-[3px] h-[5%] bg-[#2a2a45] rounded-r-sm' />
-                    <div className='absolute -left-[2px] top-[30%] w-[3px] h-[8%] bg-[#2a2a45] rounded-r-sm' />
-                    <div className='absolute -left-[2px] top-[40%] w-[3px] h-[8%] bg-[#2a2a45] rounded-r-sm' />
+                    <div className='absolute -right-[2px] top-[28%] w-[3px] h-[8%] bg-muted rounded-l-sm' />
+                    <div className='absolute -left-[2px] top-[22%] w-[3px] h-[5%] bg-muted rounded-r-sm' />
+                    <div className='absolute -left-[2px] top-[30%] w-[3px] h-[8%] bg-muted rounded-r-sm' />
+                    <div className='absolute -left-[2px] top-[40%] w-[3px] h-[8%] bg-muted rounded-r-sm' />
                   </div>
                 )}
               </div>
@@ -146,7 +146,7 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
     >
       <GameAtmosphere count={20} />
       {/* Background Pattern */}
-      <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#22d3ee14_1px,transparent_1px),linear-gradient(to_bottom,#22d3ee14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
+      <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#60a5fa14_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
 
       <div className='container mx-auto px-6 md:px-16 lg:px-24 relative z-10'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
@@ -155,7 +155,7 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
             <p className='text-xs md:text-sm uppercase tracking-[0.35em] text-primary font-sans font-medium'>
               {titleLine1 || 'Case Study'}
             </p>
-            <h1 className='text-4xl md:text-6xl lg:text-7xl font-display font-bold text-foreground tracking-tight leading-[110%]'>
+            <h1 className='text-4xl md:text-6xl lg:text-7xl font-display uppercase tracking-[0.06em] text-foreground leading-[110%]'>
               {titleLine2 || 'Guided Tour Onboarding'}
             </h1>
             <p className='text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl'>
@@ -169,19 +169,19 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
               {isDesktop ? (
                 /* Desktop frame */
                 <div
-                  className='relative rounded-[1rem] md:rounded-[1.5rem] bg-[#1a1a2e] p-[4px] md:p-[6px] shadow-2xl'
+                  className='relative rounded-[1rem] md:rounded-[1.5rem] bg-card p-[4px] md:p-[6px] shadow-2xl'
                   style={{
                     width: 'var(--hero-desktop-width)',
                     aspectRatio: '16 / 9',
                     boxShadow: `
                       0 0 0 1px rgba(255,255,255,0.08),
                       0 25px 60px -12px rgba(0,0,0,0.5),
-                      0 0 60px 10px rgba(34, 211, 238, 0.22)
+                      0 0 60px 10px rgba(147, 197, 253, 0.22)
                     `,
                   }}
                 >
                   {/* Desktop inner bezel */}
-                  <div className='relative w-full h-full rounded-[0.75rem] md:rounded-[1.25rem] overflow-hidden bg-[#0f0f1a]'>
+                  <div className='relative w-full h-full rounded-[0.75rem] md:rounded-[1.25rem] overflow-hidden bg-background'>
                     {/* Video or Image */}
                     {videoSrc && (
                       isImage ? (
@@ -208,25 +208,25 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
                   </div>
 
                   {/* Desktop stand */}
-                  <div className='absolute -bottom-[12px] left-1/2 -translate-x-1/2 w-[60%] h-[8px] bg-[#2a2a45] rounded-b-lg' />
-                  <div className='absolute -bottom-[20px] left-1/2 -translate-x-1/2 w-[80%] h-[4px] bg-[#1a1a2e] rounded-full' />
+                  <div className='absolute -bottom-[12px] left-1/2 -translate-x-1/2 w-[60%] h-[8px] bg-muted rounded-b-lg' />
+                  <div className='absolute -bottom-[20px] left-1/2 -translate-x-1/2 w-[80%] h-[4px] bg-card rounded-full' />
                 </div>
               ) : (
                 /* Phone frame */
                 <div
-                  className='relative rounded-[2.5rem] md:rounded-[3rem] bg-[#1a1a2e] p-[3px] md:p-1 shadow-2xl'
+                  className='relative rounded-[2.5rem] md:rounded-[3rem] bg-card p-[3px] md:p-1 shadow-2xl'
                   style={{
                     width: 'var(--hero-phone-width)',
                     aspectRatio: '375 / 812',
                     boxShadow: `
                       0 0 0 1px rgba(255,255,255,0.08),
                       0 25px 60px -12px rgba(0,0,0,0.5),
-                      0 0 60px 10px rgba(34, 211, 238, 0.22)
+                      0 0 60px 10px rgba(147, 197, 253, 0.22)
                     `,
                   }}
                 >
                   {/* Phone inner bezel */}
-                  <div className='relative w-full h-full rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-[#0f0f1a]'>
+                  <div className='relative w-full h-full rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-background'>
                     {/* Video or Image */}
                     {videoSrc && (
                       isImage ? (
@@ -253,10 +253,10 @@ const Section1: React.FC<SectionProps> = ({ scrollYProgress, videoSrc, titleLine
                   </div>
 
                   {/* Side button accents */}
-                  <div className='absolute -right-[2px] top-[28%] w-[3px] h-[8%] bg-[#2a2a45] rounded-l-sm' />
-                  <div className='absolute -left-[2px] top-[22%] w-[3px] h-[5%] bg-[#2a2a45] rounded-r-sm' />
-                  <div className='absolute -left-[2px] top-[30%] w-[3px] h-[8%] bg-[#2a2a45] rounded-r-sm' />
-                  <div className='absolute -left-[2px] top-[40%] w-[3px] h-[8%] bg-[#2a2a45] rounded-r-sm' />
+                  <div className='absolute -right-[2px] top-[28%] w-[3px] h-[8%] bg-muted rounded-l-sm' />
+                  <div className='absolute -left-[2px] top-[22%] w-[3px] h-[5%] bg-muted rounded-r-sm' />
+                  <div className='absolute -left-[2px] top-[30%] w-[3px] h-[8%] bg-muted rounded-r-sm' />
+                  <div className='absolute -left-[2px] top-[40%] w-[3px] h-[8%] bg-muted rounded-r-sm' />
                 </div>
               )}
             </div>
@@ -304,7 +304,7 @@ const Section2: React.FC<SectionProps & { children?: React.ReactNode }> = ({
   if (!isClient) {
     return (
       <section className='relative min-h-screen bg-background'>
-        <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#22d3ee14_1px,transparent_1px),linear-gradient(to_bottom,#22d3ee14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
+        <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#60a5fa14_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
         <div className='relative z-10'>
           {children}
         </div>
@@ -318,7 +318,7 @@ const Section2: React.FC<SectionProps & { children?: React.ReactNode }> = ({
       className='relative min-h-screen bg-background'
     >
       <GameAtmosphere count={60} />
-      <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#22d3ee14_1px,transparent_1px),linear-gradient(to_bottom,#22d3ee14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
+      <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#60a5fa14_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
 
       <div className='relative z-10'>
         {children}
@@ -363,14 +363,14 @@ const HeroScrollAnimation = forwardRef<HTMLElement, ComponentProps>(({
     return (
       <main ref={container} className='relative h-[200vh]'>
         <section className='sticky top-0 h-screen pt-32 pb-8 bg-gradient-to-b from-background to-background/95 flex items-center justify-center text-foreground overflow-hidden'>
-          <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#22d3ee14_1px,transparent_1px),linear-gradient(to_bottom,#22d3ee14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
+          <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#60a5fa14_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
           <div className='container mx-auto px-6 md:px-16 lg:px-24 relative z-10'>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
               <div className='flex flex-col gap-6 order-2 lg:order-1'>
                 <p className='text-xs md:text-sm uppercase tracking-[0.35em] text-primary font-sans font-medium'>
                   {titleLine1 || 'Case Study'}
                 </p>
-                <h1 className='text-4xl md:text-6xl lg:text-7xl font-display font-bold text-foreground tracking-tight leading-[110%]'>
+                <h1 className='text-4xl md:text-6xl lg:text-7xl font-display uppercase tracking-[0.06em] text-foreground leading-[110%]'>
                   {titleLine2 || 'Guided Tour Onboarding'}
                 </h1>
                 <p className='text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl'>
@@ -382,18 +382,18 @@ const HeroScrollAnimation = forwardRef<HTMLElement, ComponentProps>(({
                   {isDesktop ? (
                     /* Desktop frame */
                     <div
-                      className='relative rounded-[1rem] md:rounded-[1.5rem] bg-[#1a1a2e] p-[4px] md:p-[6px] shadow-2xl'
+                      className='relative rounded-[1rem] md:rounded-[1.5rem] bg-card p-[4px] md:p-[6px] shadow-2xl'
                       style={{
                         width: 'var(--hero-desktop-width)',
                         aspectRatio: '16 / 10',
                         boxShadow: `
                           0 0 0 1px rgba(255,255,255,0.08),
                           0 25px 60px -12px rgba(0,0,0,0.5),
-                          0 0 60px 10px rgba(34, 211, 238, 0.22)
+                          0 0 60px 10px rgba(147, 197, 253, 0.22)
                         `,
                       }}
                     >
-                      <div className='relative w-full h-full rounded-[0.75rem] md:rounded-[1.25rem] overflow-hidden bg-[#0f0f1a]'>
+                      <div className='relative w-full h-full rounded-[0.75rem] md:rounded-[1.25rem] overflow-hidden bg-background'>
                         {videoSrc && (
                           isImage ? (
                             <img
@@ -415,24 +415,24 @@ const HeroScrollAnimation = forwardRef<HTMLElement, ComponentProps>(({
                         )}
                         <div className='absolute inset-0 rounded-[0.75rem] md:rounded-[1.25rem] shadow-[inset_0_0_20px_rgba(0,0,0,0.3)] pointer-events-none z-10' />
                       </div>
-                      <div className='absolute -bottom-[12px] left-1/2 -translate-x-1/2 w-[60%] h-[8px] bg-[#2a2a45] rounded-b-lg' />
-                      <div className='absolute -bottom-[20px] left-1/2 -translate-x-1/2 w-[80%] h-[4px] bg-[#1a1a2e] rounded-full' />
+                      <div className='absolute -bottom-[12px] left-1/2 -translate-x-1/2 w-[60%] h-[8px] bg-muted rounded-b-lg' />
+                      <div className='absolute -bottom-[20px] left-1/2 -translate-x-1/2 w-[80%] h-[4px] bg-card rounded-full' />
                     </div>
                   ) : (
                     /* Phone frame */
                     <div
-                      className='relative rounded-[2.5rem] md:rounded-[3rem] bg-[#1a1a2e] p-[3px] md:p-1 shadow-2xl'
+                      className='relative rounded-[2.5rem] md:rounded-[3rem] bg-card p-[3px] md:p-1 shadow-2xl'
                       style={{
                         width: 'var(--hero-phone-width)',
                         aspectRatio: '375 / 812',
                         boxShadow: `
                           0 0 0 1px rgba(255,255,255,0.08),
                           0 25px 60px -12px rgba(0,0,0,0.5),
-                          0 0 60px 10px rgba(34, 211, 238, 0.22)
+                          0 0 60px 10px rgba(147, 197, 253, 0.22)
                         `,
                       }}
                     >
-                      <div className='relative w-full h-full rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-[#0f0f1a]'>
+                      <div className='relative w-full h-full rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-background'>
                         {videoSrc && (
                           isImage ? (
                             <img
@@ -454,10 +454,10 @@ const HeroScrollAnimation = forwardRef<HTMLElement, ComponentProps>(({
                         )}
                         <div className='absolute inset-0 rounded-[2.25rem] md:rounded-[2.75rem] shadow-[inset_0_0_20px_rgba(0,0,0,0.3)] pointer-events-none z-10' />
                       </div>
-                      <div className='absolute -right-[2px] top-[28%] w-[3px] h-[8%] bg-[#2a2a45] rounded-l-sm' />
-                      <div className='absolute -left-[2px] top-[22%] w-[3px] h-[5%] bg-[#2a2a45] rounded-r-sm' />
-                      <div className='absolute -left-[2px] top-[30%] w-[3px] h-[8%] bg-[#2a2a45] rounded-r-sm' />
-                      <div className='absolute -left-[2px] top-[40%] w-[3px] h-[8%] bg-[#2a2a45] rounded-r-sm' />
+                      <div className='absolute -right-[2px] top-[28%] w-[3px] h-[8%] bg-muted rounded-l-sm' />
+                      <div className='absolute -left-[2px] top-[22%] w-[3px] h-[5%] bg-muted rounded-r-sm' />
+                      <div className='absolute -left-[2px] top-[30%] w-[3px] h-[8%] bg-muted rounded-r-sm' />
+                      <div className='absolute -left-[2px] top-[40%] w-[3px] h-[8%] bg-muted rounded-r-sm' />
                     </div>
                   )}
                 </div>
@@ -474,7 +474,7 @@ const HeroScrollAnimation = forwardRef<HTMLElement, ComponentProps>(({
           </div>
         </section>
         <section className='relative min-h-screen bg-background'>
-          <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#22d3ee14_1px,transparent_1px),linear-gradient(to_bottom,#22d3ee14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
+          <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#60a5fa14_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa14_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
           <div className='relative z-10'>
             {children}
           </div>
