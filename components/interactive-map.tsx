@@ -216,6 +216,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
   const foxX = useMotionValue(saved.x);
   const foxY = useMotionValue(saved.y);
   const heldKeys = useRef<Set<string>>(new Set());
+  const mouseTarget = useRef<{ x: number; y: number } | null>(null);
   const [direction, setDirection] = useState<'left' | 'right'>('right');
   const [nearbyTitle, setNearbyTitle] = useState<string | null>(null);
   const [discoveredProjects, setDiscoveredProjects] = useState<Set<string>>(
@@ -226,6 +227,23 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
   const [fit, setFit] = useState({ scale: 1, top: NAV_CLEARANCE });
   const pointsPerProject = 250;
   const points = discoveredProjects.size * pointsPerProject;
+
+  const discoverProject = (project: Project) => {
+    setCurrentProject(project);
+    if (!discoveredProjects.has(project.title)) {
+      setDiscoveredProjects(new Set([...discoveredProjects, project.title]));
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const relX = e.clientX - rect.left;
+    const relY = e.clientY - rect.top;
+    mouseTarget.current = {
+      x: (relX - rect.width / 2) / fit.scale + MAZE_WIDTH / 2,
+      y: (relY - fit.top) / fit.scale,
+    };
+  };
 
   const trees = useMemo(() => {
     const taken = new Set([
@@ -292,10 +310,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
       if (e.key === 'Enter') {
         const project = projectAtFox();
         if (!project) return;
-        setCurrentProject(project);
-        if (!discoveredProjects.has(project.title)) {
-          setDiscoveredProjects(new Set([...discoveredProjects, project.title]));
-        }
+        discoverProject(project);
         return;
       }
 
@@ -328,16 +343,37 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
       dirX = Math.sign(dirX);
       dirY = Math.sign(dirY);
 
+      let moveX = 0;
+      let moveY = 0;
+
       if (dirX || dirY) {
+        // Keyboard takes priority over the cursor when both are active.
         const distance = FOX_SPEED * seconds * (dirX && dirY ? Math.SQRT1_2 : 1);
+        moveX = dirX * distance;
+        moveY = dirY * distance;
+      } else if (mouseTarget.current) {
+        const x = foxX.get();
+        const y = foxY.get();
+        const dx = mouseTarget.current.x - x;
+        const dy = mouseTarget.current.y - y;
+        const dist = Math.hypot(dx, dy);
+        const deadzone = 6; // Stops the fox from jittering once it reaches the cursor.
+        if (dist > deadzone) {
+          const travel = Math.min(FOX_SPEED * seconds, dist - deadzone);
+          moveX = (dx / dist) * travel;
+          moveY = (dy / dist) * travel;
+        }
+      }
+
+      if (moveX || moveY) {
         const x = foxX.get();
         const y = foxY.get();
         // Each axis is tested alone so the fox slides along a wall instead of sticking to it.
-        const nextX = hitsWall(x + dirX * distance, y) ? x : x + dirX * distance;
-        const nextY = hitsWall(nextX, y + dirY * distance) ? y : y + dirY * distance;
+        const nextX = hitsWall(x + moveX, y) ? x : x + moveX;
+        const nextY = hitsWall(nextX, y + moveY) ? y : y + moveY;
         foxX.set(nextX);
         foxY.set(nextY);
-        if (dirX) setDirection(dirX < 0 ? 'left' : 'right');
+        if (moveX) setDirection(moveX < 0 ? 'left' : 'right');
         setNearbyTitle(projectAtFox()?.title ?? null);
       }
 
@@ -375,7 +411,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
   }, [discoveredProjects, projects.length, currentProject, showLevelComplete, saved]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden" onMouseMove={handleMouseMove}>
       {/* Background is flat (from the page wrapper above, which spans the
           title + maze together) — no gradient/vignette/mist here, so the
           color stays consistent throughout the Woods screen. */}
@@ -459,6 +495,10 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
               key={project.title}
               className="absolute"
               style={{ left: project.x - 32, top: project.y - 32 }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                if (isNear) discoverProject(project);
+              }}
             >
               {/* Glow orb */}
               <motion.div
@@ -515,7 +555,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
                     {isDiscovered ? '✓ ' : ''}{project.title}
                   </p>
                   <p className="text-xs text-primary/70 mt-0.5">
-                    Press <kbd className="px-1 py-0.5 bg-primary/20 rounded text-foreground/80">Enter</kbd> to {isDiscovered ? 'view' : 'discover'}
+                    Right-click or press <kbd className="px-1 py-0.5 bg-primary/20 rounded text-foreground/80">Enter</kbd> to {isDiscovered ? 'view' : 'discover'}
                   </p>
                 </motion.div>
               )}
@@ -693,7 +733,7 @@ export default function InteractiveMap({ projects, onAllDiscovered }: MapProps) 
           transition={{ delay: 1 }}
         >
           <p className="text-foreground text-sm font-semibold text-center">
-            Use arrow keys or WASD to explore • Press <kbd className="px-1.5 py-0.5 bg-primary/20 rounded text-foreground/80 text-xs">Enter</kbd> near orbs
+            Move with your cursor, arrow keys or WASD • Right-click or <kbd className="px-1.5 py-0.5 bg-primary/20 rounded text-foreground/80 text-xs">Enter</kbd> near orbs to explore
           </p>
         </motion.div>
       </FixedToViewport>
