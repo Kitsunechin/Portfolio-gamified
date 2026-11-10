@@ -195,15 +195,22 @@ export default function HomePage() {
 
               <OrnamentalDivider className="mb-8" />
 
-              <motion.p
-                className="font-display italic text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed"
+              <motion.div
+                className="mb-10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                A silver fox wanders through magical woods, seeking glowing memories of design adventures.
-                Each orb holds a tale of enhancing experiences for users.
-              </motion.p>
+                <p className="font-display italic text-lg md:text-xl text-muted-foreground leading-relaxed mb-4">
+                  In Japanese folklore, the kitsune grows wiser with every journey. My fox wanders magical
+                  woods collecting glowing memories, and each one is a design story: a problem worth solving,
+                  a hypothesis tested, and a product that got better for its users.
+                </p>
+                <p className="font-display italic text-lg md:text-xl text-muted-foreground leading-relaxed">
+                  I&rsquo;m Martyna, a product designer who brings psycholinguistics, behavioral science and
+                  a high bar for craft to mobile and B2B products.
+                </p>
+              </motion.div>
 
               <motion.button
                 onClick={beginJourney}
