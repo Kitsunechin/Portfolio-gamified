@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Home, Map, User } from "lucide-react";
+import { Home, Briefcase, User } from "lucide-react";
 import { requestIntro } from "@/lib/intro";
 
 export default function GameNav() {
@@ -11,8 +11,8 @@ export default function GameNav() {
 
   const links = [
     { href: "/", label: "Home", icon: Home },
-    { href: "/work", label: "Adventures", icon: Map },
-    { href: "/about", label: "Character", icon: User },
+    { href: "/work", label: "Work", icon: Briefcase },
+    { href: "/about", label: "About me", icon: User },
   ];
 
   return (
